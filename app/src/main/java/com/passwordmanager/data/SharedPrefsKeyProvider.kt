@@ -53,7 +53,7 @@ class SharedPrefsKeyProvider(internal var mAppSharedPrefs: SharedPreferences) : 
     }
 
     companion object {
-        private val REALM_KEY = ".realm_key"
+        private val REALM_KEY: String = ".realm_key"
         private val SHARED_PREFS_NAME = "shared_prefs"
 
         private var sharedPrefsKeyProvider: SharedPrefsKeyProvider? = null

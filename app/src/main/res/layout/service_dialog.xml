@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="com.passwordmanager.viewmodel.ServiceDialogViewModel" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/addservice_dialog_actionbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Добавить"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addservice_dialog_passwordblock" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Аккаунт"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/addservice_dialog_nameedittext_lay"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:inputType="textPersonName"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/addservice_dialog_nameedittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Название сервиса" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/editText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addservice_dialog_nameedittext_lay">
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/addservice_dialog_loginedittext_lay"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:inputType="textEmailAddress"
+                app:errorEnabled="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/addservice_dialog_loginedittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Логин" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/addservice_dialog_logincopy"
+                android:layout_width="20dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/ic_copy"
+                android:onClick="@{viewmodel::copyLogin}"
+                app:layout_constraintBottom_toBottomOf="@+id/addservice_dialog_loginedittext_lay"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.23"
+                app:layout_constraintStart_toEndOf="@+id/addservice_dialog_loginedittext_lay"
+                app:layout_constraintTop_toTopOf="@+id/addservice_dialog_loginedittext_lay" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/addservice_dialog_passwordblock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@+id/editText2"
+            app:layout_constraintTop_toBottomOf="@+id/editText2">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/addservice_dialog_passwordedittext_lay"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                app:errorEnabled="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/addservice_dialog_passwordedittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Пароль"
+                    android:inputType="textPassword" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/addservice_dialog_passwordshow"
+                android:layout_width="25dp"
+                android:layout_height="17dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/ic_show"
+                android:onClick="@{viewmodel::showHidePassword}"
+                app:layout_constraintBottom_toBottomOf="@+id/addservice_dialog_passwordedittext_lay"
+                app:layout_constraintEnd_toStartOf="@+id/addservice_dialog_passwordcopy"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/addservice_dialog_passwordedittext_lay"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/addservice_dialog_passwordcopy"
+                android:layout_width="20dp"
+                android:layout_height="23dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/ic_copy"
+                android:onClick="@{viewmodel::copyPassword}"
+                app:layout_constraintBottom_toBottomOf="@+id/addservice_dialog_passwordshow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/addservice_dialog_passwordshow" />
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

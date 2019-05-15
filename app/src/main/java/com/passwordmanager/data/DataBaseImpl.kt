@@ -1,23 +1,59 @@
 package com.passwordmanager.data
 
-import com.passwordmanager.data.models.Entry
-import com.passwordmanager.data.models.Service
+import com.passwordmanager.data.models.Pair
+import com.passwordmanager.data.models.UserService
 
 import io.realm.Realm
 import io.realm.RealmResults
+import timber.log.Timber
+import java.lang.Exception
 
 class DataBaseImpl : DataBase {
 
-    private val realm: Realm = Realm.getDefaultInstance()
+    private var realm: Realm = Realm.getDefaultInstance()
 
-    override val services: RealmResults<Service> = realm.where<Service>(Service::class.java).findAllAsync()
+    override fun loadServices(): RealmResults<UserService> {
+        var services = realm.where<UserService>(UserService::class.java).findAll()
+        return services
+    }
 
-    override fun addEntry(service: Service, entry: Entry) {
-        realm.beginTransaction()
+    override fun loadService(id: String): UserService? {
+        realm = Realm.getDefaultInstance()
+        return try {
+            realm.beginTransaction()
+            val service = realm.where(UserService::class.java).equalTo("id", id).findAll().first()
+            realm.commitTransaction()
+            realm.copyFromRealm(service)
+        } catch (e: Exception) {
+            realm.close()
+            null
+        }
+    }
 
-        realm.copyToRealm(entry)
-        service.entry = entry
+    override fun saveService(userService: UserService): Boolean {
+        Timber.i("saving : %s", userService.toString())
+        realm = Realm.getDefaultInstance()
+        return try {
+            realm.beginTransaction()
+            realm.copyToRealmOrUpdate(userService)
+            realm.commitTransaction()
+            true
+        } catch (e: Exception) {
+            realm.close()
+            false
+        }
+    }
 
-        realm.commitTransaction()
+    override fun deleteService(id: String): Boolean {
+        realm = Realm.getDefaultInstance()
+        return try {
+            realm.beginTransaction()
+            realm.where(UserService::class.java).equalTo("id", id).findAll().deleteAllFromRealm()
+            realm.commitTransaction()
+            true
+        } catch (e: Exception) {
+            realm.close()
+            false
+        }
     }
 }

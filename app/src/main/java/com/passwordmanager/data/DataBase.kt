@@ -1,14 +1,18 @@
 package com.passwordmanager.data
 
-import com.passwordmanager.data.models.Entry
-import com.passwordmanager.data.models.Service
+import com.passwordmanager.data.models.Pair
+import com.passwordmanager.data.models.UserService
+import io.realm.Realm
 
 import io.realm.RealmResults
 
 interface DataBase {
 
-    val services: RealmResults<Service>
+    fun loadServices(): RealmResults<UserService>
 
-    fun addEntry(service: Service, entry: Entry)
+    fun loadService(id: String): UserService?
 
+    fun saveService(userService: UserService): Boolean
+
+    fun deleteService(id: String): Boolean
 }
