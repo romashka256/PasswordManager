@@ -5,6 +5,7 @@ import android.content.Context
 import com.passwordmanager.data.SharedPrefsKeyProvider
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import timber.log.Timber
 
 class App : Application() {
 
@@ -14,6 +15,8 @@ class App : Application() {
         super.onCreate()
 
         context = applicationContext
+
+        Timber.plant(Timber.DebugTree())
 
         Realm.init(applicationContext)
 

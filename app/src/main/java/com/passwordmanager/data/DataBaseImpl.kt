@@ -1,20 +1,16 @@
 package com.passwordmanager.data
 
-import com.passwordmanager.data.models.Pair
 import com.passwordmanager.data.models.UserService
-
 import io.realm.Realm
-import io.realm.RealmResults
 import timber.log.Timber
-import java.lang.Exception
 
 class DataBaseImpl : DataBase {
 
     private var realm: Realm = Realm.getDefaultInstance()
 
-    override fun loadServices(): RealmResults<UserService> {
-        var services = realm.where<UserService>(UserService::class.java).findAll()
-        return services
+    override fun loadServices(): ArrayList<UserService> {
+        val services = realm.where(UserService::class.java).findAll()
+        return realm.copyFromRealm(services) as ArrayList<UserService>? ?: arrayListOf<UserService>()
     }
 
     override fun loadService(id: String): UserService? {
@@ -23,7 +19,7 @@ class DataBaseImpl : DataBase {
             realm.beginTransaction()
             val service = realm.where(UserService::class.java).equalTo("id", id).findAll().first()
             realm.commitTransaction()
-            realm.copyFromRealm(service)
+            return realm.copyFromRealm(service)
         } catch (e: Exception) {
             realm.close()
             null

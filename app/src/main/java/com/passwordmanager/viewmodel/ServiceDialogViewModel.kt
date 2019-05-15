@@ -1,24 +1,21 @@
 package com.passwordmanager.viewmodel
 
-import android.app.Service
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
+import android.text.Editable
+import android.view.View
 import com.passwordmanager.data.DataBase
 import com.passwordmanager.data.DataBaseImpl
 import com.passwordmanager.data.models.UserService
 import com.passwordmanager.utils.Validator
-import android.view.View
 
 
 open class ServiceDialogViewModel : ViewModel() {
 
     val toastToShowEvent: MutableLiveData<String> = MutableLiveData()
-
     lateinit var userService: ObservableField<UserService>
-
     lateinit var dataBase: DataBase
-
     private var passwordHiden: Boolean = false
 
     val loginErrorMessage: MutableLiveData<String> = MutableLiveData()
@@ -26,6 +23,8 @@ open class ServiceDialogViewModel : ViewModel() {
     val nameErrorMessage: MutableLiveData<String> = MutableLiveData()
     val passwordErrorMessage: MutableLiveData<String> = MutableLiveData()
     val copiedEvent: MutableLiveData<String> = MutableLiveData()
+    val addedEvent: MutableLiveData<Boolean> = MutableLiveData()
+    val updatedEvent: MutableLiveData<Boolean> = MutableLiveData()
     val showHidePassword: MutableLiveData<Boolean> = MutableLiveData()
 
     fun onCreate() {
@@ -44,25 +43,25 @@ open class ServiceDialogViewModel : ViewModel() {
         serviceLoaded.value = userService.get()
     }
 
-    fun loginChanged(login: String) {
-        if (Validator.valideLogin(login)) {
-            userService.get()?.pair?.login = login
+    fun loginChanged(login: Editable) {
+        if (Validator.valideLogin(login.toString())) {
+            userService.get()?.pair?.login = login.toString()
             loginErrorMessage.value = ""
         } else
             loginErrorMessage.value = "Некорректный логин (@)"
     }
 
-    fun passwordChanged(password: String) {
-        if (Validator.validePassword(password)) {
-            userService.get()?.pair?.password = password
+    fun passwordChanged(password: Editable) {
+        if (Validator.validePassword(password.toString())) {
+            userService.get()?.pair?.password = password.toString()
             passwordErrorMessage.value = ""
         } else
             passwordErrorMessage.value = "Пароль должен быть больше 6 знаков"
     }
 
-    fun nameChanged(name: String) {
-        if (Validator.valideName(name)) {
-            userService.get()?.name = name
+    fun nameChanged(name: Editable) {
+        if (Validator.valideName(name.toString())) {
+            userService.get()?.name = name.toString()
             nameErrorMessage.value = ""
         } else
             nameErrorMessage.value = "Некорректное название"
@@ -70,19 +69,25 @@ open class ServiceDialogViewModel : ViewModel() {
 
     fun onAddClicked(): Boolean {
         return if (Validator.valideName(userService.get()?.name) && Validator.valideLogin(userService.get()?.pair?.login) && Validator.validePassword(userService.get()?.pair?.password)) {
-            if (dataBase.saveService(userService.get()!!))
+            if (dataBase.saveService(userService.get()!!)) {
+                addedEvent.value = true
                 toastToShowEvent.value = "Успешно добавлено"
-            else
+            } else
                 toastToShowEvent.value = "Произошла ошибка"
             true
         } else
             false
     }
 
+    fun save() {
+        dataBase.saveService(userService.get()!!)
+    }
+
     fun onDeleteClicked() {
-        if (dataBase.deleteService(userService.get()!!.id))
+        if (dataBase.deleteService(userService.get()!!.id)) {
+            updatedEvent.value = true
             toastToShowEvent.value = "Успешно удалено"
-        else
+        } else
             toastToShowEvent.value = "Произошла ошибка"
     }
 
