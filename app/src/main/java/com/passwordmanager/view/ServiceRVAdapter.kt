@@ -25,6 +25,7 @@ class ServiceRVAdapter(private val items: List<UserService>, var listener: OnUse
         p0.bind(items[p1])
     }
 
+
     inner class ViewHolder(val binding: ServiceItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: UserService) {
             with(binding) {
