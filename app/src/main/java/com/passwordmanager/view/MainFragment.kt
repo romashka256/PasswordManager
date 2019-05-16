@@ -45,6 +45,7 @@ class MainFragment : Fragment() {
 
         mainViewModel.deleteEvent.observe(this, Observer { pos ->
             listAdapter.notifyItemRemoved(pos!!)
+            listAdapter.notifyItemRangeChanged(pos!!, mainViewModel.services.size);
         })
 
         sharedViewModel.userServiceAddedEvent.observe(this, Observer { item -> mainViewModel.itemAdded(item!!) })

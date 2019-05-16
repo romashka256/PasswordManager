@@ -20,7 +20,6 @@ class ShowServiceDialog : ServiceDialogBase() {
         if (arguments != null)
             viewModel.setService(arguments?.get("serviceId") as String)
 
-
         viewModel.serviceLoaded.observe(this, Observer { service ->
             serviceDialogBinding?.addserviceDialogNameedittext?.setText(service!!.name)
             serviceDialogBinding?.addserviceDialogLoginedittext?.setText(service!!.pair!!.login)
