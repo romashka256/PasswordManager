@@ -13,6 +13,7 @@ class MainViewModel : ViewModel(), View.OnClickListener {
     var addClicked: MutableLiveData<Void> = MutableLiveData()
     val servicesLoadedEvent: MutableLiveData<List<UserService>> = MutableLiveData()
     val updateEvent: MutableLiveData<Int> = MutableLiveData()
+    val deleteEvent: MutableLiveData<Int> = MutableLiveData()
     var services: ArrayList<UserService> = arrayListOf()
     var currentItem: Int? = null
 
@@ -38,6 +39,6 @@ class MainViewModel : ViewModel(), View.OnClickListener {
 
     fun itemRemoved() {
         services.removeAt(currentItem!!)
-        updateEvent.value = currentItem
+        deleteEvent.value = currentItem
     }
 }
