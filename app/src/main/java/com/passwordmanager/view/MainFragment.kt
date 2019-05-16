@@ -22,6 +22,7 @@ class MainFragment : Fragment() {
     private lateinit var mainFragmentBinding: MainFragmentBinding
     private lateinit var mainViewModel: MainViewModel
     private lateinit var sharedViewModel: SharedViewModel
+    private lateinit var listAdapter: ServiceRVAdapter
     private val fragment: Fragment = this
 
 
@@ -36,6 +37,10 @@ class MainFragment : Fragment() {
             val dialog = AddServiceDialog()
             dialog.setTargetFragment(fragment, 0)
             dialog.show(fragmentManager, "asd123")
+        })
+
+        mainViewModel.updateEvent.observe(this, Observer { pos ->
+            listAdapter.notifyItemChanged(pos!!)
         })
 
         sharedViewModel.userServiceAddedEvent.observe(this, Observer { item -> mainViewModel.itemAdded(item!!) })
@@ -60,7 +65,7 @@ class MainFragment : Fragment() {
         mainFragmentBinding.mainfragmentRv.addItemDecoration(dividerItemDecoration)
 
         mainViewModel.servicesLoadedEvent.observe(this, Observer { list ->
-            mainFragmentBinding.mainfragmentRv.adapter = ServiceRVAdapter(list!!, object : OnUserServiceClickedListener {
+            listAdapter = ServiceRVAdapter(list!!, object : OnUserServiceClickedListener {
                 override fun onServiceClicked(id: String, pos: Int) {
                     mainViewModel.currentItem = pos
                     val bundle = Bundle()
@@ -71,6 +76,7 @@ class MainFragment : Fragment() {
                     dialog.show(fragmentManager, "asd")
                 }
             })
+            mainFragmentBinding.mainfragmentRv.adapter = listAdapter
         })
         return view
     }

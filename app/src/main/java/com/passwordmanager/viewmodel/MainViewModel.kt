@@ -12,7 +12,7 @@ class MainViewModel : ViewModel(), View.OnClickListener {
     lateinit var dataBase: DataBase
     var addClicked: MutableLiveData<Void> = MutableLiveData()
     val servicesLoadedEvent: MutableLiveData<List<UserService>> = MutableLiveData()
-    val updateEvent: MutableLiveData<Void> = MutableLiveData()
+    val updateEvent: MutableLiveData<Int> = MutableLiveData()
     var services: ArrayList<UserService> = arrayListOf()
     var currentItem: Int? = null
 
@@ -28,16 +28,16 @@ class MainViewModel : ViewModel(), View.OnClickListener {
 
     fun itemAdded(service: UserService) {
         services.add(service)
-        servicesLoadedEvent.value = services
+        updateEvent.value = services.size - 1
     }
 
     fun itemUpdated(service: UserService) {
-        services.set(currentItem!!, service)
-        servicesLoadedEvent.value = services
+        services[currentItem!!] = service
+        updateEvent.value = currentItem
     }
 
     fun itemRemoved() {
         services.removeAt(currentItem!!)
-        servicesLoadedEvent.value = services
+        updateEvent.value = currentItem
     }
 }
